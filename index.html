@@ -249,7 +249,7 @@
             <h1>❤️ A Special Question ❤️</h1>
             <div class="question">Do you want to hangout on 17th October?</div>
             <div class="meme-container">
-                <img id="screen1Meme" src="https://i.pinimg.com/474x/c3/88/92/c38892d2e8d98f8c03f8a21a0d86a77a.jpg" alt="Cute cat">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Crect fill='%23fff0f5' width='300' height='300'/%3E%3Ctext x='150' y='150' font-size='80' text-anchor='middle' dominant-baseline='middle'%3E😸%3C/text%3E%3C/svg%3E" alt="Cute cat">
             </div>
             <div class="buttons-container" id="buttonsContainer">
                 <button class="btn-yes" onclick="goToScreen2()">YES 💚</button>
@@ -264,7 +264,7 @@
             <div class="decorative-hearts">💕 💕 💕</div>
             <div class="message">You made the right choice!</div>
             <div class="meme-container">
-                <img src="https://i.pinimg.com/474x/9f/51/51/9f5151c8d2e8f9c3b8e2f7a1d5c9e3f2.jpg" alt="Happy cat">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Crect fill='%23fff0f5' width='300' height='300'/%3E%3Ctext x='150' y='150' font-size='80' text-anchor='middle' dominant-baseline='middle'%3E😻%3C/text%3E%3C/svg%3E" alt="Happy cat">
             </div>
             <button class="btn-continue" onclick="goToScreen3()">Continue 💕</button>
         </div>
@@ -292,7 +292,7 @@
                 I'll be picking you up at <strong style="color: #ff6b9d;">[ <span id="selectedTime">--:-- --</span> ]</strong> on 17th October, see ya! 💗
             </div>
             <div class="meme-container">
-                <img src="https://i.pinimg.com/474x/b8/3e/8e/b83e8ee6f5c9a3e7d2f8b1a5c9e3f7a2.jpg" alt="Cat sending love">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Crect fill='%23fff0f5' width='300' height='300'/%3E%3Ctext x='150' y='150' font-size='80' text-anchor='middle' dominant-baseline='middle'%3E😻💕%3C/text%3E%3C/svg%3E" alt="Cat sending love">
             </div>
             <div class="decorative-hearts">💕 💕 💕</div>
         </div>
@@ -316,20 +316,6 @@
             "Pls pm me the reason u don't want to 😢"
         ];
 
-        const catMemes = [
-            "https://i.pinimg.com/474x/c3/88/92/c38892d2e8d98f8c03f8a21a0d86a77a.jpg",
-            "https://i.pinimg.com/474x/f5/a7/8d/f5a78d1e9c2b3f4a5e6d7c8b9a0f1e2d.jpg",
-            "https://i.pinimg.com/474x/3e/2c/8f/3e2c8f7e6d5c4b3a2f1e0d9c8b7a6f5e.jpg",
-            "https://i.pinimg.com/474x/9a/1b/2c/9a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d.jpg",
-            "https://i.pinimg.com/474x/7d/6e/5f/7d6e5f4c3b2a1e0d9c8b7a6f5e4d3c2b.jpg",
-            "https://i.pinimg.com/474x/2a/3b/4c/2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d.jpg",
-            "https://i.pinimg.com/474x/5f/4e/3d/5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c.jpg",
-            "https://i.pinimg.com/474x/8c/9d/0e/8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f.jpg",
-            "https://i.pinimg.com/474x/1e/0d/9c/1e0d9c8b7a6f5e4d3c2b1a0f9e8d7c6b.jpg",
-            "https://i.pinimg.com/474x/4b/3a/2f/4b3a2f1e0d9c8b7a6f5e4d3c2b1a0f9e.jpg",
-            "https://i.pinimg.com/474x/d7/c6/b5/d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2.jpg"
-        ];
-
         // Create floating hearts
         function createFloatingHearts() {
             setInterval(() => {
@@ -348,12 +334,6 @@
             if (attemptCount < 11) {
                 const noBtn = document.getElementById('noBtn');
                 const attemptMsg = document.getElementById('attemptMsg');
-                const screen1Meme = document.getElementById('screen1Meme');
-                
-                // Change cat meme
-                if (attemptCount < catMemes.length) {
-                    screen1Meme.src = catMemes[attemptCount];
-                }
                 
                 // Move the button randomly within the container
                 const container = document.getElementById('buttonsContainer');
@@ -398,7 +378,6 @@
         function resetToScreen1() {
             attemptCount = 0;
             const noBtn = document.getElementById('noBtn');
-            const screen1Meme = document.getElementById('screen1Meme');
             
             noBtn.style.position = 'absolute';
             noBtn.style.right = '30px';
@@ -406,7 +385,6 @@
             noBtn.style.top = '50%';
             noBtn.style.transform = 'translateY(-50%)';
             
-            screen1Meme.src = catMemes[0];
             document.getElementById('attemptMsg').textContent = '';
             
             const retryBtn = document.getElementById('retryBtn');
