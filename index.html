@@ -29,6 +29,8 @@
             text-align: center;
             max-width: 600px;
             width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .screen {
@@ -69,6 +71,8 @@
             justify-content: center;
             margin: 30px 0;
             flex-wrap: wrap;
+            position: relative;
+            min-height: 50px;
         }
 
         button {
@@ -94,7 +98,7 @@
         .btn-no {
             background: #f44336;
             color: white;
-            position: relative;
+            position: absolute;
         }
 
         .btn-no:hover {
@@ -146,12 +150,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
         }
 
         .meme-container img {
             max-width: 100%;
-            max-height: 300px;
+            max-height: 350px;
             border-radius: 10px;
+            object-fit: contain;
+        }
+
+        .emoji-cat {
+            font-size: 100px;
+            margin: 20px 0;
         }
 
         .message {
@@ -167,21 +178,11 @@
         }
 
         .attempt-message {
-            font-size: 16px;
+            font-size: 18px;
             color: #764ba2;
             margin: 15px 0;
             font-weight: bold;
-            min-height: 20px;
-        }
-
-        .qr-code {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .qr-code a {
-            display: inline-block;
-            margin-top: 10px;
+            min-height: 30px;
         }
 
         .heart-animation {
@@ -201,14 +202,11 @@
         <div class="screen active" id="screen1">
             <h1>❤️ A Special Question ❤️</h1>
             <div class="question">Do you want to hangout on 17th October?</div>
-            <div class="buttons-container">
+            <div class="buttons-container" id="buttonsContainer">
                 <button class="btn-yes" onclick="goToScreen2()">Yes</button>
                 <button class="btn-no" id="noBtn" onclick="evadeNo()">No</button>
             </div>
-            <div class="qr-code">
-                <p>💝 Or scan the QR code below:</p>
-                <svg id="qrcode" style="margin-top: 20px;"></svg>
-            </div>
+            <div class="attempt-message" id="attemptMsg"></div>
         </div>
 
         <!-- Screen 2: Correct Answer -->
@@ -248,7 +246,6 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
         let attemptCount = 0;
         let selectedTime = null;
@@ -267,55 +264,18 @@
             "Pls pm me the reason u don't want to 😢"
         ];
 
-        const catMemes = [
-            "https://media.giphy.com/media/JIX9RCntv0qKc/giphy.gif",
-            "https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif",
-            "https://media.giphy.com/media/3o85xIO33l7RlmLR4I/giphy.gif",
-            "https://media.giphy.com/media/Cm2Hr3tPvm1zW/giphy.gif",
-            "https://media.giphy.com/media/xTiTnLuHe0IYW0Olwo/giphy.gif",
-            "https://media.giphy.com/media/13CoXDiaCcFZwL0OYg/giphy.gif",
-            "https://media.giphy.com/media/l0HlQo2FB4DQXxNqY/giphy.gif",
-            "https://media.giphy.com/media/FdAJVI5HF9BjVusgk9/giphy.gif",
-            "https://media.giphy.com/media/l3q2K5jinAlZ7Fashion/giphy.gif",
-            "https://media.giphy.com/media/5xtDarmwsuR9sDKgH2c/giphy.gif",
-            "https://media.giphy.com/media/l0HlRnAQ7ryUJtJ1K/giphy.gif"
-        ];
-
-        // Initialize QR Code
-        function initQRCode() {
-            new QRCode(document.getElementById("qrcode"), {
-                text: window.location.href,
-                width: 200,
-                height: 200,
-                colorDark: "#667eea",
-                colorLight: "#ffffff"
-            });
-        }
-
         function evadeNo() {
             if (attemptCount < 11) {
                 const noBtn = document.getElementById('noBtn');
-                const attemptMsg = document.querySelector('.attempt-message');
+                const attemptMsg = document.getElementById('attemptMsg');
                 
                 // Move the button randomly
-                const randomX = Math.random() * 300 - 150;
-                const randomY = Math.random() * 300 - 150;
+                const randomX = (Math.random() - 0.5) * 200;
+                const randomY = (Math.random() - 0.5) * 150;
                 noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
                 
-                // Show cat meme
-                if (attemptCount < catMemes.length) {
-                    showCatMeme(catMemes[attemptCount]);
-                }
-                
                 // Show attempt message
-                const container = document.querySelector('.container');
-                if (!attemptMsg) {
-                    const msg = document.createElement('div');
-                    msg.className = 'attempt-message';
-                    container.appendChild(msg);
-                }
-                const msg = document.querySelector('.attempt-message');
-                msg.textContent = attemptMessages[attemptCount];
+                attemptMsg.textContent = attemptMessages[attemptCount];
                 
                 attemptCount++;
             } else {
@@ -324,35 +284,25 @@
             }
         }
 
-        function showCatMeme(memeUrl) {
-            let memeContainer = document.querySelector('.meme-container-no');
-            if (!memeContainer) {
-                memeContainer = document.createElement('div');
-                memeContainer.className = 'meme-container meme-container-no';
-                document.querySelector('.container').insertBefore(memeContainer, document.querySelector('.buttons-container').nextSibling);
-            }
-            memeContainer.innerHTML = `<img src="${memeUrl}" alt="Cat meme">`;
-        }
-
         function showRetryButton() {
             let retryBtn = document.getElementById('retryBtn');
             if (!retryBtn) {
+                const container = document.getElementById('buttonsContainer');
                 retryBtn = document.createElement('button');
                 retryBtn.id = 'retryBtn';
                 retryBtn.className = 'btn-retry';
                 retryBtn.textContent = 'Retry';
+                retryBtn.style.position = 'static';
+                retryBtn.style.marginTop = '20px';
                 retryBtn.onclick = resetToScreen1;
-                document.querySelector('.buttons-container').appendChild(retryBtn);
+                container.parentNode.insertBefore(retryBtn, container.nextSibling);
             }
         }
 
         function resetToScreen1() {
             attemptCount = 0;
             document.getElementById('noBtn').style.transform = 'translate(0, 0)';
-            const memeContainer = document.querySelector('.meme-container-no');
-            if (memeContainer) memeContainer.remove();
-            const attemptMsg = document.querySelector('.attempt-message');
-            if (attemptMsg) attemptMsg.remove();
+            document.getElementById('attemptMsg').textContent = '';
             const retryBtn = document.getElementById('retryBtn');
             if (retryBtn) retryBtn.remove();
         }
@@ -388,9 +338,6 @@
             });
             document.getElementById(screenId).classList.add('active');
         }
-
-        // Initialize QR code on page load
-        window.addEventListener('load', initQRCode);
     </script>
 </body>
 </html>
