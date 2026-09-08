@@ -69,10 +69,12 @@
             display: flex;
             gap: 20px;
             justify-content: center;
+            align-items: center;
             margin: 30px 0;
             flex-wrap: wrap;
-            position: relative;
             min-height: 50px;
+            position: relative;
+            height: 300px;
         }
 
         button {
@@ -88,17 +90,24 @@
         .btn-yes {
             background: #4CAF50;
             color: white;
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         .btn-yes:hover {
             background: #45a049;
-            transform: scale(1.05);
+            transform: translateY(-50%) scale(1.05);
         }
 
         .btn-no {
             background: #f44336;
             color: white;
             position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         .btn-no:hover {
@@ -110,11 +119,13 @@
             color: white;
             padding: 12px 40px;
             font-size: 16px;
+            position: static !important;
+            transform: none !important;
         }
 
         .btn-continue:hover, .btn-submit:hover, .btn-retry:hover {
             background: #5568d3;
-            transform: scale(1.05);
+            transform: scale(1.05) !important;
         }
 
         .time-options {
@@ -241,7 +252,9 @@
                 I'll be picking you up at <strong id="selectedTime">--:-- --</strong> on 17th October, see ya! 💕
             </div>
             <div class="meme-container">
-                <img src="https://media.giphy.com/media/JIX9RCntv0qKc/giphy.gif" alt="Cat sending love">
+                <svg class="emoji-placeholder">
+                    <text x="50" y="50" font-size="80" text-anchor="middle">😻💕💕</text>
+                </svg>
             </div>
         </div>
     </div>
@@ -269,10 +282,20 @@
                 const noBtn = document.getElementById('noBtn');
                 const attemptMsg = document.getElementById('attemptMsg');
                 
-                // Move the button randomly
-                const randomX = (Math.random() - 0.5) * 200;
-                const randomY = (Math.random() - 0.5) * 150;
-                noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+                // Move the button randomly within the container
+                const container = document.getElementById('buttonsContainer');
+                const containerRect = container.getBoundingClientRect();
+                const buttonWidth = noBtn.offsetWidth;
+                const buttonHeight = noBtn.offsetHeight;
+                
+                const randomX = Math.random() * (containerRect.width - buttonWidth - 40);
+                const randomY = Math.random() * (containerRect.height - buttonHeight - 40);
+                
+                noBtn.style.position = 'absolute';
+                noBtn.style.left = randomX + 'px';
+                noBtn.style.top = randomY + 'px';
+                noBtn.style.right = 'auto';
+                noBtn.style.transform = 'none';
                 
                 // Show attempt message
                 attemptMsg.textContent = attemptMessages[attemptCount];
@@ -301,7 +324,12 @@
 
         function resetToScreen1() {
             attemptCount = 0;
-            document.getElementById('noBtn').style.transform = 'translate(0, 0)';
+            const noBtn = document.getElementById('noBtn');
+            noBtn.style.position = 'absolute';
+            noBtn.style.right = '20px';
+            noBtn.style.left = 'auto';
+            noBtn.style.top = '50%';
+            noBtn.style.transform = 'translateY(-50%)';
             document.getElementById('attemptMsg').textContent = '';
             const retryBtn = document.getElementById('retryBtn');
             if (retryBtn) retryBtn.remove();
